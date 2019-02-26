@@ -1,7 +1,7 @@
 <xml>
     <priip>
         <data>
-            <product id="test">
+            <product id="test" color="red">
                 <priipCloudProductTemplate>otc</priipCloudProductTemplate>
                 <priipCloudProductType>fxSwap</priipCloudProductType>
                 <productIdentifier>RBI_fxSwap_EURUSD_long_1Y2D_EUR</productIdentifier>

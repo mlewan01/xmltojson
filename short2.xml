@@ -1,0 +1,18 @@
+<xml>
+    <priip>
+        <data>
+            <product id="test" color="red">
+                <Template>otc</Template>
+                <Type>fxSwap</Type>
+                <company>
+                    <id>rbi</id>
+                    <name>Bank</name>
+                </company>
+            </product>
+            <info>
+                <id>rb</id>
+                <type>Bank</type>
+            </info>
+        </data>
+    </priip>
+</xml>

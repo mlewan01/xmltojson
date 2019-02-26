@@ -1,0 +1,13 @@
+<xml>
+    <priip>
+        <product id="test" color="red">
+            <Type>fxSwap</Type>
+            <company>
+                <id>rbi</id>
+            </company>
+        </product>
+        <info>
+            <type>Bank</type>
+        </info>
+    </priip>
+</xml>
