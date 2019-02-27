@@ -2,4 +2,8 @@
     <Type>finance</Type>
     <company>bank</company>
     <name>ING</name>
+    <prod2>
+        <Ty>finance</Ty>
+        <company>bank</company>
+    </prod2>
 </product>

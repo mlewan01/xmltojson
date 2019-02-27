@@ -33,7 +33,7 @@ function rec4($xml, $cc=0, $ss=0){
     echo "\"$current\"";
 //    $xml-
     $children = $xml->count();
-    echo "$children-$cc-$ss";
+//    echo "$children-$cc-$ss";
     echo ":";
     if($children > 0){
         echo "{";
@@ -42,15 +42,19 @@ function rec4($xml, $cc=0, $ss=0){
         $child_count++;
         if(rec4($val, $child_count,$children) == 0){
             echo "<b>\"$val\"</b>";
+//            echo "key:$key-val:$val";
+//            echo "<b>\"$val\"</b>$children-$cc-$ss";
         }
         if($children - $child_count > 0){
-            echo ",";
+            echo ", ";
         }
     }
     if($children > 0){
         echo "}";
     }
+    return $child_count;
 }
+//{"product":{"Type":"finance","company":"bank","name":"ING","product":{"Type":"finance","company":"bank"}""}}
 function rec3($xml){
     $child_count = 0;
     $current = $xml->getName();
