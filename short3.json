@@ -1,0 +1,18 @@
+{"priip":{"data":{"product":{"@id":"test","@color":"red","Type":"finance","company":{"id":"ING"}},"info":{"type":"Bank"}}}}
+{
+  "priip": {
+    "data": {
+      "product": {
+        "@id": "test",
+        "@color": "red",
+        "Type": "finance",
+        "company": {
+          "id": "ING"
+        }
+      },
+      "info": {
+        "type": "Bank"
+      }
+    }
+  }
+}
