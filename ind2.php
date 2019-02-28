@@ -5,13 +5,61 @@ $myfile = fopen("short6.xml", "r") or die("Unable to open file!");
 $stream = fread($myfile,filesize("data.xml"));
 fclose($myfile);
 //$stream = str_replace(array("\r", "\n"), '', $stream);
-//$stream = trim(preg_replace('/\s+/', '', $stream)); // '/(\>)\s*(\<)/m', '$1$2',
-$stream = trim(preg_replace('/(\>)\s*(\<)/m', '$1$2', $stream));
-//echo $stream;
+//$stream = trim(preg_replace('/\s+/', '', $stream)); // all white spaces
+$stream = trim(preg_replace('/(\>)\s*(\<)/m', '$1$2', $stream)); // white spaces in between tags
+
 //$stream = readfile('data.xml');
 //$xml = new SimpleXMLElement($stream);
 $xml  = new SimpleXmlIterator($stream);
-//print_r($xml);
+echo "{"; xml2json($xml); echo "}";
+//$js = getThatJson();
+//var_dump($js);
+
+/** retrives the json string through http
+ * @return false|string
+ */
+function getThatJson(){
+    return file_get_contents($_SERVER["REQUEST_SCHEME"]."://".$_SERVER["SERVER_ADDR"].$_SERVER['PHP_SELF']);
+//    echo $_SERVER["REQUEST_SCHEME"]."://".$_SERVER["SERVER_ADDR"].$_SERVER['PHP_SELF'];
+}
+
+
+/** converts xml to json
+ * @param $xml SimpleXmlIterator object
+ * @param int $cc Children count
+ * @param int $ss Syblings count
+ * @return int Curent child
+ */
+function xml2json($xml, $cc=0, $ss=0){
+    $child_count = 0;
+    $current = $xml->getName();
+    echo "\"$current\"";
+    $children = $xml->count();
+//    echo "$children-$cc-$ss"; // helpful test
+    echo ":";
+    if($children > 0){
+        echo "{";
+    }
+    foreach($xml as $key=>$val){ // walking the children
+        $child_count++;
+        if($val->attributes()[0] != NULL){  // check for attributes presence
+            foreach($val->attributes() as $k2=>$v2){
+                $val->addChild("@$k2", $v2); // adding attributes to current xml node( so it can be later retrived and printed in "@node:value" format
+            }
+        }
+        if(rec4($val, $child_count,$children) == 0){ // recursive call the the fu
+            echo "\"$val\"";
+//            echo "<b>\"$val\"</b>$children-$cc-$ss"; // helpful test
+        }
+        if($children - $child_count > 0){
+            echo ", ";
+        }
+    }
+    if($children > 0){
+        echo "}";
+    }
+    return $child_count;
+}
 //RecurseXML($xml);
 //echo $xml.current($xml);
 //recurs($xml, 0);
@@ -23,7 +71,7 @@ $xml  = new SimpleXmlIterator($stream);
 //var_dump($xml->current());
 //echo $xml->key();
 //print_r($xml->children());
-echo "{"; rec4($xml);echo "}<br/><br/>";
+//echo "{"; rec4($xml);echo "}<br/><br/>";
 //echo "{";
 //rec2($xml);
 //rec3($xml);
@@ -41,10 +89,18 @@ function rec4($xml, $cc=0, $ss=0){
     }
     foreach($xml as $key=>$val){
         $child_count++;
+
         if(rec4($val, $child_count,$children) == 0){
             echo "<b>\"$val\"</b>";
 //            echo "key:$key-val:$val";
 //            echo "<b>\"$val\"</b>$children-$cc-$ss";
+        }
+        if($val->attributes()[0] != NULL){
+
+            foreach($val->attributes() as $k2=>$v2){
+                echo " \"@$k2\": <b>\"$v2\"</b>";
+            }
+//                var_dump($val->attributes());
         }
         if($children - $child_count > 0){
             echo ", ";
