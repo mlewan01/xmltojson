@@ -5,7 +5,8 @@ $myfile = fopen("short6.xml", "r") or die("Unable to open file!");
 $stream = fread($myfile,filesize("data.xml"));
 fclose($myfile);
 //$stream = str_replace(array("\r", "\n"), '', $stream);
-$stream = trim(preg_replace('/\s+/', '', $stream));
+//$stream = trim(preg_replace('/\s+/', '', $stream)); // '/(\>)\s*(\<)/m', '$1$2',
+$stream = trim(preg_replace('/(\>)\s*(\<)/m', '$1$2', $stream));
 //echo $stream;
 //$stream = readfile('data.xml');
 //$xml = new SimpleXMLElement($stream);
@@ -22,11 +23,11 @@ $xml  = new SimpleXmlIterator($stream);
 //var_dump($xml->current());
 //echo $xml->key();
 //print_r($xml->children());
-echo "{";rec4($xml);echo "}<br/><br/>";
-echo "{";
+echo "{"; rec4($xml);echo "}<br/><br/>";
+//echo "{";
 //rec2($xml);
-rec3($xml);
-echo "}";
+//rec3($xml);
+//echo "}";
 function rec4($xml, $cc=0, $ss=0){
     $child_count = 0;
     $current = $xml->getName();

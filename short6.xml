@@ -2,7 +2,7 @@
     <Type>finance</Type>
     <company>bank</company>
     <name>ING</name>
-    <prod2>
+    <prod2 id="test" color="red">
         <Ty>finance</Ty>
         <company>bank</company>
     </prod2>
