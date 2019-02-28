@@ -1,7 +1,9 @@
 <?php
 $xml = getData("data.xml");
 
-echo "{"; xml2json($xml); echo "}";
+$au = xml2json($xml);
+
+echo "{"; echo $au[1]; echo "}";
 
 function getData($data){
     $stream = '
@@ -152,31 +154,36 @@ function getData($data){
 }
 
 function xml2json($xml, $cc=0, $ss=0){
+    $out='';     $xmlarr = array();
     $child_count = 0;
     $current = $xml->getName();
-    echo "\"$current\"";
+    $out .= "\"$current\"";
     $children = $xml->count();
-    echo ":";
+//    echo "$children-$cc-$ss"; // helpful test
+    $out .= ":";
     if($children > 0){
-        echo "{";
+        $out .= "{";
     }
-    foreach($xml as $key=>$val){
+    foreach($xml as $key=>$val){ // walking the children
         $child_count++;
-        if($val->attributes()[0] != NULL){
+        if($val->attributes()[0] != NULL){  // check for attributes presence
             foreach($val->attributes() as $k2=>$v2){
-                $val->addChild("@$k2", $v2);
+                $val->addChild("@$k2", $v2); // adding attributes to current xml node( so it can be later retrived and printed in "@node:value" format
             }
         }
-        if(xml2json($val, $child_count,$children) == 0){
-            echo "\"$val\"";
+        $xmlarr = xml2json($val, $child_count,$children);
+        $out .= $xmlarr[1];
+        if($xmlarr[0] == 0){ // recursive call the the fu
+            $out .= "\"$val\"";
+//            echo "<b>\"$val\"</b>$children-$cc-$ss"; // helpful test
         }
         if($children - $child_count > 0){
-            echo ", ";
+            $out .= ", ";
         }
     }
     if($children > 0){
-        echo "}";
+        $out .= "}";
     }
-    return $child_count;
+    return array($child_count, $out);
 }
 ?>
