@@ -1,4 +1,10 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?php
+$xml = getData("data.xml");
+
+echo "{"; xml2json($xml); echo "}";
+
+function getData($data){
+    $stream = '
 <priip>
 <data>
     <product>
@@ -137,3 +143,40 @@
     </costOutputs>
 </data>
 </priip>
+    ';
+
+    $stream = trim(preg_replace('/(\>)\s*(\<)/m', '$1$2', $stream));
+
+    $xml  = new SimpleXmlIterator($stream);
+    return $xml;
+}
+
+function xml2json($xml, $cc=0, $ss=0){
+    $child_count = 0;
+    $current = $xml->getName();
+    echo "\"$current\"";
+    $children = $xml->count();
+    echo ":";
+    if($children > 0){
+        echo "{";
+    }
+    foreach($xml as $key=>$val){
+        $child_count++;
+        if($val->attributes()[0] != NULL){
+            foreach($val->attributes() as $k2=>$v2){
+                $val->addChild("@$k2", $v2);
+            }
+        }
+        if(xml2json($val, $child_count,$children) == 0){
+            echo "\"$val\"";
+        }
+        if($children - $child_count > 0){
+            echo ", ";
+        }
+    }
+    if($children > 0){
+        echo "}";
+    }
+    return $child_count;
+}
+?>

@@ -7,3 +7,4 @@
         <company>bank</company>
     </prod2>
 </product>
+<product><Type>finance-wow</Type><company>bank</company><name>ING</name><prod2 id="test" color="red"><Ty>finance</Ty><company>bank</company></prod2></product>
