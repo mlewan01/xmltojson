@@ -2,8 +2,10 @@
 error_reporting(E_ALL);
 
 $xml = getData("data.xml");
+$au = xml2json($xml);
 
-echo "{"; xml2json($xml); echo "}";
+echo "{"; echo $au[1]; echo "}";
+
 
 /** gets the data ready for processig
  * @param $data
@@ -34,7 +36,6 @@ function getThatJson(){
 //    echo $_SERVER["REQUEST_SCHEME"]."://".$_SERVER["SERVER_ADDR"].$_SERVER['PHP_SELF'];
 }
 
-
 /** converts xml to json
  * @param $xml SimpleXmlIterator object
  * @param int $cc Children count
@@ -42,14 +43,15 @@ function getThatJson(){
  * @return int Curent child
  */
 function xml2json($xml, $cc=0, $ss=0){
+    $out='';     $xmlarr = array();
     $child_count = 0;
     $current = $xml->getName();
-    echo "\"$current\"";
+    $out .= "\"$current\"";
     $children = $xml->count();
 //    echo "$children-$cc-$ss"; // helpful test
-    echo ":";
+    $out .= ":";
     if($children > 0){
-        echo "{";
+        $out .= "{";
     }
     foreach($xml as $key=>$val){ // walking the children
         $child_count++;
@@ -58,18 +60,19 @@ function xml2json($xml, $cc=0, $ss=0){
                 $val->addChild("@$k2", $v2); // adding attributes to current xml node( so it can be later retrived and printed in "@node:value" format
             }
         }
-        if(xml2json($val, $child_count,$children) == 0){ // recursive call the the fu
-            echo "\"$val\"";
+        $xmlarr = xml2json($val, $child_count,$children);
+        $out .= $xmlarr[1];
+        if($xmlarr[0] == 0){ // recursive call the the fu
+            $out .= "\"$val\"";
 //            echo "<b>\"$val\"</b>$children-$cc-$ss"; // helpful test
         }
         if($children - $child_count > 0){
-            echo ", ";
+            $out .= ", ";
         }
     }
     if($children > 0){
-        echo "}";
+        $out .= "}";
     }
-    return $child_count;
+    return array($child_count, $out);
 }
-
 ?>
