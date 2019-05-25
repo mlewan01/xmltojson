@@ -1,0 +1,5 @@
+1 natural solution to this task is to solve it with a recursive function
+2 attributes diema solved by adding nodes with the names and values same as the attribute
+3 problems include:
+- initially displayed json with echo.
+- tuning the function xml2json so it will display "}{:," characters in the right place

@@ -4,8 +4,8 @@ error_reporting(E_ALL);
 $xml = getData("data.xml");
 $au = xml2json($xml);
 
-echo "{"; echo $au[1]; echo "}";
-
+//echo "{"; echo $au[1]; echo "}";
+echo "{" . $au[1] . "}";
 
 /** gets the data ready for processig
  * @param $data
